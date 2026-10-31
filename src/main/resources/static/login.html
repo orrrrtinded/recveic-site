@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="auth-pending">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#132523">
+    <title>Entrar | RecVec</title>
+    <link rel="stylesheet" href="/theme.css?v=22"><link rel="stylesheet" href="/remake.css?v=5">
+    <script src="/theme.js?v=26" defer></script><script src="/interface.js?v=2" defer></script>
+    <script src="/__/firebase/8.10.1/firebase-app.js"></script>
+    <script src="/__/firebase/8.10.1/firebase-auth.js"></script>
+    <script src="/__/firebase/8.10.1/firebase-firestore.js"></script>
+    <script src="/__/firebase/init.js"></script>
+    <script src="/auth.js?v=7"></script>
+</head>
+<body data-page="login" class="login-page">
+    <main class="login-layout">
+        <section class="login-brand" aria-label="RecVec">
+            <div class="login-brand-inner">
+                <a class="brand-lockup" href="/login.html" aria-label="RecVec">
+                    <img class="brand-logo" src="/favicon.png?v=1" alt="" width="44" height="44">
+                    <span><strong>RecVec</strong><small>Gestão de oficina</small></span>
+                </a>
+                <div class="login-statement">
+                    <span class="login-eyebrow">DA ENTRADA À ENTREGA</span>
+                    <h1>Sua oficina.<br><em>Tudo conectado.</em></h1>
+                    <p>O orçamento vira serviço. As peças chegam.<br>O trabalho segue até a entrega.</p>
+                </div>
+                <div class="workshop-drawing" aria-hidden="true">
+                    <svg viewBox="0 0 640 280" fill="none"><g stroke="currentColor" stroke-width="1.5"><path class="drawing-grid" d="M0 235H640M0 255H640M40 0V280M600 0V280M0 45H640"/><path d="M84 188v-43l28-16 57-70q9-12 27-12h180q18 0 33 12l73 62 57 15q15 4 18 23l5 29h-40m-333 0h225m-275 0H84"/><path d="M145 123l47-59h83v59H145Zm145-59h81q12 0 22 9l58 50H290V64Z"/><path d="M116 139h39l-13 23H91m411-26h32l8 22h-30M305 138h22M82 179h42m414 0h25M220 156h175"/><circle cx="175" cy="188" r="38"/><circle cx="175" cy="188" r="22"/><circle cx="469" cy="188" r="38"/><circle cx="469" cy="188" r="22"/><path class="drawing-dim" d="M82 245h480M82 237v16m480-16v16M175 228v40m294-40v40M175 262h294"/></g><circle class="drawing-point" cx="327" cy="138" r="5" fill="currentColor"/></svg>
+                    <div class="drawing-caption"><span>RECVEC / GESTÃO AUTOMOTIVA</span><span>01 — 04</span></div>
+                </div>
+                <ol class="login-flow"><li><span>01</span>Orçamento</li><li><span>02</span>Execução</li><li><span>03</span>Peças</li><li><span>04</span>Entrega</li></ol>
+            </div>
+        </section>
+
+        <section class="login-panel">
+            <div class="login-card">
+                <div class="login-form-mark" aria-hidden="true">↗</div>
+                <h2>Bem-vindo de volta.</h2>
+                <p class="login-copy">Entre para continuar o trabalho.</p>
+
+                <form id="login-form" class="login-form">
+                    <label for="email">E-mail</label>
+                    <input id="email" type="email" autocomplete="username" placeholder="voce@empresa.com" required autofocus>
+
+                    <div class="password-label">
+                        <label for="password">Senha</label>
+                        <button id="toggle-password" class="text-button" type="button" aria-pressed="false">Mostrar</button>
+                    </div>
+                    <input id="password" type="password" autocomplete="current-password" placeholder="Sua senha" minlength="6" required>
+
+                    <button class="login-submit" type="submit">Entrar no sistema <span aria-hidden="true">→</span></button>
+                    <button id="reset-password" class="reset-button" type="button">Esqueci minha senha</button>
+                </form>
+
+                <div id="login-status" class="login-status" role="status" aria-live="polite"></div>
+                <p class="login-access-note">Acesso liberado pelo administrador da oficina.</p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="auth-pending">
+<head>
+    <script>try{var t=localStorage.getItem('theme')||'light';document.documentElement.classList.add('theme-'+t);}catch(e){}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#132523">
+    <title>Pagamentos | RecVec</title>
+    <link rel="stylesheet" href="/theme.css?v=22"><link rel="stylesheet" href="/remake.css?v=5">
+    <script src="/theme.js?v=26" defer></script><script src="/interface.js?v=2" defer></script>
+    <script src="/__/firebase/8.10.1/firebase-app.js"></script>
+    <script src="/__/firebase/8.10.1/firebase-auth.js"></script>
+    <script src="/__/firebase/8.10.1/firebase-firestore.js"></script>
+    <script src="/__/firebase/init.js"></script>
+    <script src="/auth.js?v=7"></script>
+    <script src="/firebase-api.js?v=11"></script>
+    <script src="/payments-page.js?v=12" defer></script>
+</head>
+<body data-page="pagamentos" class="payments-page">
+<main class="payments-main">
+    <header class="header payments-header" data-index="07">
+        <div class="eyebrow">Módulo 05</div>
+        <h1>Pagamentos</h1>
+        <p class="header-description">Ordens concluídas chegam aqui automaticamente e permanecem pendentes ate o recebimento total.</p>
+    </header>
+
+    <section class="payment-metrics" aria-label="Resumo financeiro">
+        <article><span>Ordens concluídas</span><strong id="metric-completed">00</strong><small>Total enviado pela oficina</small></article>
+        <article><span>Pagamentos pendentes</span><strong id="metric-pending">00</strong><small>Ordens com saldo em aberto</small></article>
+        <article class="metric-money"><span>Total recebido</span><strong id="metric-received">R$ 0,00</strong><small>Somatorio dos recebimentos</small></article>
+    </section>
+
+    <section class="payment-workspace">
+        <div class="payment-queue">
+            <div class="queue-toolbar">
+                <div>
+                    <span class="step-label">Fila financeira</span>
+                    <h2>Ordens concluídas</h2>
+                </div>
+                <div class="queue-search"><input id="payment-search" type="search" placeholder="Buscar cliente, placa ou OS..." autocomplete="off"></div>
+            </div>
+            <div class="payment-filters" aria-label="Filtrar pagamentos">
+                <button type="button" data-payment-filter="pendente" aria-pressed="true">Pendentes <span id="payment-pending-count">0</span></button>
+                <button type="button" data-payment-filter="pago" aria-pressed="false">Pagas <span id="payment-paid-count">0</span></button>
+                <button type="button" data-payment-filter="todos" aria-pressed="false">Todas</button>
+            </div>
+            <div class="bulk-actions" id="payments-bulk-actions" hidden>
+                <label><input id="payments-select-all" type="checkbox"> Marcar todos os resultados</label>
+                <span id="payments-selected-count">0 selecionados</span>
+                <button id="payments-delete-selected" type="button" disabled>Excluir selecionados</button>
+            </div>
+            <div id="payment-orders" class="payment-orders"><div class="queue-empty">Carregando ordens concluidas...</div></div>
+        </div>
+
+        <aside class="payment-entry" id="payment-entry">
+            <div id="payment-placeholder" class="payment-placeholder">
+                <span class="payment-placeholder-mark">R$</span>
+                <h2>Selecione uma ordem</h2>
+                <p>Escolha uma OS pendente ao lado para registrar o valor recebido.</p>
+            </div>
+
+            <form id="payment-form" class="payment-form" hidden>
+                <input type="hidden" id="payment-order-id">
+                <input type="hidden" id="payment-record-id">
+                <div class="payment-form-heading">
+                    <div><span class="step-label">Registrar recebimento</span><h2 id="selected-order-number">OS #0000</h2></div>
+                    <button id="close-payment" type="button" aria-label="Fechar">×</button>
+                </div>
+
+                <div class="selected-order-client">
+                    <strong id="selected-client">Cliente</strong>
+                    <span id="selected-vehicle">Veículo</span>
+                    <small id="selected-phone">Telefone</small>
+                </div>
+
+                <div class="payment-balance">
+                    <div><span>Valor da OS</span><strong id="selected-total">R$ 0,00</strong></div>
+                    <div><span>Ja recebido</span><strong id="selected-paid">R$ 0,00</strong></div>
+                    <div class="payment-balance-open"><span>Saldo pendente</span><strong id="selected-balance">R$ 0,00</strong></div>
+                </div>
+
+                <label class="field payment-amount-field">
+                    <span>Valor recebido agora <b>obrigatorio</b></span>
+                    <span class="money-control"><i>R$</i><input id="payment-amount" type="number" min="0.01" step="0.01" placeholder="0,00" required></span>
+                </label>
+
+                <div class="payment-fields-row">
+                    <label class="field">
+                        <span>Data do pagamento</span>
+                        <input id="payment-date" type="date" required>
+                    </label>
+                    <label class="field">
+                        <span>Forma de pagamento</span>
+                        <select id="payment-method" required>
+                            <option value="">Selecione...</option>
+                            <option value="pix">PIX</option>
+                            <option value="dinheiro">Dinheiro</option>
+                            <option value="credito">Cartao de credito</option>
+                            <option value="debito">Cartao de debito</option>
+                            <option value="boleto">Boleto</option>
+                            <option value="transferencia">Transferencia</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div id="payment-history" class="payment-history"></div>
+                <div id="payment-status" class="form-status" role="status" aria-live="polite"></div>
+                <button class="payment-submit" type="submit">Confirmar recebimento</button>
+            </form>
+        </aside>
+    </section>
+</main>
+</body>
+</html>

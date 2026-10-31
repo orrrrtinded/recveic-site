@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="auth-pending">
+<head>
+    <script>try{document.documentElement.classList.add('theme-'+(localStorage.getItem('theme')||'light'))}catch(e){}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Peças para pedir | RecVec</title>
+    <link rel="stylesheet" href="/theme.css?v=22"><link rel="stylesheet" href="/remake.css?v=5">
+    <script src="/theme.js?v=26" defer></script><script src="/interface.js?v=2" defer></script>
+    <script src="/__/firebase/8.10.1/firebase-app.js"></script>
+    <script src="/__/firebase/8.10.1/firebase-auth.js"></script>
+    <script src="/__/firebase/8.10.1/firebase-firestore.js"></script>
+    <script src="/__/firebase/init.js"></script>
+    <script src="/auth.js?v=7"></script>
+    <script src="/firebase-api.js?v=11"></script>
+    <script src="/parts-page.js?v=5" defer></script>
+</head>
+<body data-page="pecas" class="orders-page">
+    <main class="orders-main">
+        <header class="header orders-header">
+            <div class="eyebrow">Módulo 04</div>
+            <h1>Peças para pedir</h1>
+            <p class="header-description">Acompanhe o que precisa ser comprado, o que está a caminho e o que já chegou.</p>
+        </header>
+
+        <section class="workflow-metrics">
+            <article><span>Precisa pedir</span><strong id="parts-need">00</strong></article>
+            <article><span>Aguardando chegada</span><strong id="parts-waiting">00</strong></article>
+            <article><span>Recebidas</span><strong id="parts-received">00</strong></article>
+        </section>
+
+        <section class="parts-workspace card-surface">
+            <div class="workflow-toolbar">
+                <div><span class="step-label">Compras</span><h2>Fila de peças</h2></div>
+                <input id="parts-search" type="search" placeholder="Buscar peça, carro, placa ou OS...">
+                <div class="status-filters">
+                    <button data-parts-filter="pendentes" aria-pressed="true">Pendentes</button>
+                    <button data-parts-filter="recebida" aria-pressed="false">Recebidas</button>
+                    <button data-parts-filter="todos" aria-pressed="false">Todas</button>
+                </div>
+            </div>
+            <div class="bulk-actions" id="parts-bulk-actions" hidden>
+                <label><input id="parts-select-all" type="checkbox"> Marcar todos os resultados</label>
+                <span id="parts-selected-count">0 selecionadas</span>
+                <button id="parts-delete-selected" type="button" disabled>Excluir selecionadas</button>
+            </div>
+            <div id="parts-list" class="parts-list"><div class="archive-empty">Carregando peças...</div></div>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="auth-pending">
+<head>
+    <script>try{var t=localStorage.getItem('theme')||'light';document.documentElement.classList.add('theme-'+t);}catch(e){}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes | RecVec</title>
+    <style>
+        :root {
+            --bg: #f3efe8;
+            --surface: rgba(255, 250, 245, 0.92);
+            --surface-strong: #fff;
+            --ink: #1e293b;
+            --accent: #8c2f1b;
+            --accent-soft: #d9b7a7;
+            --ok: #0f766e;
+            --danger: #b42318;
+            --line: #ead8c6;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: "Trebuchet MS", Verdana, sans-serif;
+            color: var(--ink);
+            background:
+                linear-gradient(135deg, rgba(140, 47, 27, 0.07), transparent 25%),
+                radial-gradient(circle at right top, rgba(15, 118, 110, 0.12), transparent 30%),
+                var(--bg);
+            min-height: 100vh;
+        }
+
+        main {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 32px 18px 64px;
+        }
+
+        .header {
+            margin-bottom: 24px;
+        }
+
+        .eyebrow {
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            font-size: .8rem;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            margin: 0;
+            font-family: Georgia, serif;
+            font-size: clamp(2rem, 4vw, 3.3rem);
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(320px, 420px) 1fr;
+            gap: 22px;
+        }
+
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 24px 60px rgba(30, 41, 59, 0.08);
+            backdrop-filter: blur(8px);
+        }
+
+        form {
+            display: grid;
+            gap: 12px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        label {
+            display: grid;
+            gap: 6px;
+            font-size: .92rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 14px;
+            border: 1px solid var(--line);
+            background: var(--surface-strong);
+            font: inherit;
+        }
+
+        input:focus {
+            outline: 2px solid rgba(140, 47, 27, 0.18);
+            border-color: var(--accent);
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        button {
+            border: 0;
+            border-radius: 999px;
+            padding: 12px 18px;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 700;
+        }
+
+        button[type="submit"] {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        button[type="button"] {
+            background: #efe4dc;
+            color: var(--ink);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 14px;
+        }
+
+        th, td {
+            padding: 14px 10px;
+            border-bottom: 1px solid var(--line);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            font-size: .85rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: #5a6572;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .small {
+            padding: 8px 12px;
+            font-size: .88rem;
+        }
+
+        .small.delete {
+            background: #fee4e2;
+            color: var(--danger);
+        }
+
+        .status {
+            margin-top: 14px;
+            min-height: 24px;
+            font-weight: 700;
+        }
+
+        .status.ok { color: var(--ok); }
+        .status.error { color: var(--danger); }
+
+        @media (max-width: 960px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            th:nth-child(4),
+            td:nth-child(4),
+            th:nth-child(5),
+            td:nth-child(5) {
+                display: none;
+            }
+        }
+
+        .btn-home {
+            display: inline-block;
+            background: var(--accent-soft);
+            color: var(--ink);
+            padding: 10px 16px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: .88rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            transition: background .2s ease;
+        }
+
+        .btn-home:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+    </style>
+    <link rel="stylesheet" href="/theme.css?v=22"><link rel="stylesheet" href="/remake.css?v=5">
+    <script src="/theme.js?v=26" defer></script><script src="/interface.js?v=2" defer></script>
+    <script src="/__/firebase/8.10.1/firebase-app.js"></script>
+    <script src="/__/firebase/8.10.1/firebase-auth.js"></script>
+    <script src="/__/firebase/8.10.1/firebase-firestore.js"></script>
+    <script src="/__/firebase/init.js"></script>
+    <script src="/auth.js?v=7"></script>
+    <script src="/firebase-api.js?v=11"></script>
+</head>
+<body data-page="clientes">
+<main>
+    <a href="/" class="btn-home">← Voltar para o Início</a>
+    <button id="theme-toggle" class="btn-home" style="margin-left:8px">Modo Escuro</button>
+    <div class="header">
+        <div class="eyebrow">Módulo de cadastro</div>
+        <h1>Cadastro de clientes</h1>
+    </div>
+
+    <section class="layout">
+        <article class="panel">
+            <h2 id="form-title">Novo cliente</h2>
+            <form id="cliente-form">
+                <input type="hidden" id="id_cliente">
+
+                <label>
+                    Nome
+                    <input id="nome" required minlength="2" maxlength="100" pattern=".*\S.*" title="Informe o nome do cliente." autocomplete="name">
+                </label>
+
+                <div class="grid">
+                    <label>
+                        CPF
+                        <input id="cpf" inputmode="numeric" maxlength="11" pattern="[0-9]{11}" title="Informe 11 números, sem pontos ou traço.">
+                    </label>
+                    <label>
+                        Telefone
+                        <input id="telefone" type="tel" maxlength="20" pattern="[0-9()+. -]{10,20}" title="Informe um telefone com DDD.">
+                    </label>
+                </div>
+
+                <label>
+                    Rua
+                    <input id="rua" required maxlength="150">
+                </label>
+
+                <div class="grid">
+                    <label>
+                        Número
+                        <input id="numero" required maxlength="10">
+                    </label>
+                    <label>
+                        Complemento
+                        <input id="complemento" maxlength="100">
+                    </label>
+                </div>
+
+                <div class="grid">
+                    <label>
+                        Bairro
+                        <input id="bairro" required maxlength="100">
+                    </label>
+                    <label>
+                        CEP
+                        <input id="cep" required inputmode="numeric" maxlength="10" pattern="[0-9]{5}-?[0-9]{3}" title="Informe um CEP com 8 números.">
+                    </label>
+                </div>
+
+                <div class="grid">
+                    <label>
+                        Cidade
+                        <input id="cidade" required maxlength="100">
+                    </label>
+                    <label>
+                        Estado
+                        <input id="estado" required minlength="2" maxlength="2" pattern="[A-Za-z]{2}" title="Use a sigla de duas letras do estado, como SP.">
+                    </label>
+                </div>
+
+                <div class="actions">
+                    <button type="submit">Salvar cliente</button>
+                    <button type="button" id="cancelar">Limpar formulario</button>
+                </div>
+            </form>
+            <div id="status" class="status"></div>
+        </article>
+
+        <article class="panel">
+            <h2>Clientes cadastrados</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Cidade</th>
+                        <th>Telefone</th>
+                        <th>Acoes</th>
+                    </tr>
+                </thead>
+                <tbody id="clientes-body"></tbody>
+            </table>
+        </article>
+    </section>
+</main>
+
+<script>
+    const apiUrl = "/api/clientes";
+    const form = document.getElementById("cliente-form");
+    const tbody = document.getElementById("clientes-body");
+    const statusBox = document.getElementById("status");
+    const formTitle = document.getElementById("form-title");
+    const cancelButton = document.getElementById("cancelar");
+
+    function setStatus(message, type = "ok") {
+        statusBox.textContent = message;
+        statusBox.className = `status ${type}`;
+    }
+
+    function clearStatus() {
+        statusBox.textContent = "";
+        statusBox.className = "status";
+    }
+
+    function formData() {
+        return {
+            nome: document.getElementById("nome").value.trim(),
+            cpf: document.getElementById("cpf").value.trim(),
+            rua: document.getElementById("rua").value.trim(),
+            numero: document.getElementById("numero").value.trim(),
+            complemento: document.getElementById("complemento").value.trim(),
+            bairro: document.getElementById("bairro").value.trim(),
+            cidade: document.getElementById("cidade").value.trim(),
+            estado: document.getElementById("estado").value.trim().toUpperCase(),
+            cep: document.getElementById("cep").value.trim(),
+            telefone: document.getElementById("telefone").value.trim()
+        };
+    }
+
+    function resetForm() {
+        form.reset();
+        document.getElementById("id_cliente").value = "";
+        formTitle.textContent = "Novo cliente";
+        clearStatus();
+    }
+
+    async function loadClientes() {
+        const response = await fetch(apiUrl);
+        const clientes = await response.json();
+
+        tbody.innerHTML = "";
+        clientes.forEach(cliente => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${cliente.id_cliente}</td>
+                <td>${cliente.nome}</td>
+                <td>${cliente.cpf ?? ""}</td>
+                <td>${cliente.cidade}/${cliente.estado}</td>
+                <td>${cliente.telefone ?? ""}</td>
+                <td>
+                    <div class="table-actions">
+                        <button class="small" data-action="edit" data-id="${cliente.id_cliente}">Editar</button>
+                        <button class="small delete" data-action="delete" data-id="${cliente.id_cliente}">Excluir</button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    async function submitForm(event) {
+        event.preventDefault();
+        clearStatus();
+
+        const id = document.getElementById("id_cliente").value;
+        const method = id ? "PUT" : "POST";
+        const url = id ? `${apiUrl}/${id}` : apiUrl;
+
+        const response = await fetch(url, {
+            method,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData())
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            const details = error.errors ? Object.values(error.errors).join(" | ") : error.message;
+            throw new Error(details);
+        }
+
+        await loadClientes();
+        resetForm();
+        setStatus(id ? "Cliente atualizado com sucesso." : "Cliente cadastrado com sucesso.");
+    }
+
+    async function editCliente(id) {
+        const response = await fetch(`${apiUrl}/${id}`);
+        const cliente = await response.json();
+
+        document.getElementById("id_cliente").value = cliente.id_cliente;
+        document.getElementById("nome").value = cliente.nome ?? "";
+        document.getElementById("cpf").value = cliente.cpf ?? "";
+        document.getElementById("rua").value = cliente.rua ?? "";
+        document.getElementById("numero").value = cliente.numero ?? "";
+        document.getElementById("complemento").value = cliente.complemento ?? "";
+        document.getElementById("bairro").value = cliente.bairro ?? "";
+        document.getElementById("cidade").value = cliente.cidade ?? "";
+        document.getElementById("estado").value = cliente.estado ?? "";
+        document.getElementById("cep").value = cliente.cep ?? "";
+        document.getElementById("telefone").value = cliente.telefone ?? "";
+        formTitle.textContent = `Editando cliente #${cliente.id_cliente}`;
+        setStatus("Cliente carregado para edicao.");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    async function deleteCliente(id) {
+        if (!(await window.recvecConfirmDelete({ count: 1, label: "cliente", pluralLabel: "clientes" }))) {
+            return;
+        }
+
+        const response = await fetch(`${apiUrl}/${id}`, { method: "DELETE" });
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message);
+        }
+
+        await loadClientes();
+        resetForm();
+        setStatus("Cliente excluido com sucesso.");
+    }
+
+    tbody.addEventListener("click", async (event) => {
+        const button = event.target.closest("button");
+        if (!button) {
+            return;
+        }
+
+        const { action, id } = button.dataset;
+
+        try {
+            if (action === "edit") {
+                await editCliente(id);
+            }
+
+            if (action === "delete") {
+                await deleteCliente(id);
+            }
+        } catch (error) {
+            setStatus(error.message, "error");
+        }
+    });
+
+    form.addEventListener("submit", async (event) => {
+        try {
+            await submitForm(event);
+        } catch (error) {
+            setStatus(error.message, "error");
+        }
+    });
+
+    cancelButton.addEventListener("click", resetForm);
+
+    loadClientes().catch(error => setStatus(error.message, "error"));
+</script>
+</body>
+</html>

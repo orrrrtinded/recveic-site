@@ -1,0 +1,16 @@
+.firebase/
+node_modules/
+target/
+dist/
+build/
+.env
+.env.*
+*.log
+*.pem
+*.key
+*.p12
+*.pfx
+*serviceAccount*.json
+*service-account*.json
+.DS_Store
+Thumbs.db
